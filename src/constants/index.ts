@@ -8,34 +8,24 @@ export const MaxCommands = {
 };
 
 export const MaxSuggestions = [
-  "Ordering Food at a Café ☕ – Practice ordering like a local!",
-  "Common Travel Phrases ✈️ – Essential phrases for your next trip.",
-  "Shopping & Bargaining 🛍️ – Learn how to negotiate prices.",
-  "AI-Powered Riddle Game! 🤔 – Solve language-based riddles.",
+  {
+    suggestion: "Ordering Food at a Café ☕ – Practice ordering like a local!",
+    prompt:
+      "Help me order Food at a Café ☕ - how to practice ordering like a local",
+  },
+  {
+    suggestion:
+      "Common Travel Phrases ✈️ – Essential phrases for your next trip.",
+    prompt:
+      "Teach me Common Travel Phrases ✈️ – Essential phrases for my next trip.",
+  },
+  {
+    suggestion: "Shopping & Bargaining 🛍️ – Learn how to negotiate prices.",
+    prompt: "Shopping & Bargaining 🛍️ – how to negotiate prices.",
+  },
+  {
+    suggestion: "AI-Powered Riddle Game! 🤔 – Solve language-based riddles.",
+    prompt:
+      "Create AI-Powered Riddle Game! 🤔 – Make me solve language-based riddles.",
+  },
 ];
-
-// storing them for temp
-// const handleMain = async (transcript: string) => {
-//   SpeechRecognition.stopListening();
-//   const audio = new Audio();
-
-//   try {
-//     const response = await axios.post(
-//       `/api/gemini/generate`,
-//       { transcript },
-//       {
-//         responseType: "blob",
-//       }
-//     );
-
-//     if (transcript !== "") {
-//       resetTranscript();
-//     }
-
-//     const audioBlob = new Blob([response.data], { type: "audio/mpeg" });
-//     audio.src = URL.createObjectURL(audioBlob);
-//     audio.play();
-//   } catch (error) {
-//     console.error("TTS request failed:", error);
-//   }
-// };

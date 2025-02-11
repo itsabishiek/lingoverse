@@ -45,12 +45,8 @@ const TalkToMax: React.FC<TalkToMaxProps> = () => {
 
         {conversation.length === 0 && (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-            {MaxSuggestions.map((suggestion, i) => (
-              <SuggestionCard
-                key={i}
-                suggestion={suggestion}
-                handleMain={handleMain}
-              />
+            {MaxSuggestions.map((data, i) => (
+              <SuggestionCard key={i} data={data} handleMain={handleMain} />
             ))}
           </div>
         )}
