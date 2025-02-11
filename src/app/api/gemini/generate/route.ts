@@ -10,7 +10,7 @@ const model = genAI.getGenerativeModel({
     `,
 });
 
-export const POST = async (req: NextRequest, res: NextResponse) => {
+export async function POST(req: NextRequest) {
   try {
     const { history, message } = await req.json();
     if (!history || !Array.isArray(history)) {
@@ -41,4 +41,4 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       { status: 500 }
     );
   }
-};
+}

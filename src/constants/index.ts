@@ -1,5 +1,3 @@
-export const mimeType = "audio/webm";
-
 export const MaxCommands = {
   intro:
     "Hey there! let’s make learning exciting! You can chat with me like a friend, practice your pronunciation, or even play language games. How would you like to start?",

@@ -26,7 +26,7 @@ export default function Home() {
           Chat, Learn, and Immerse Yourself in Real Conversations! Our
           AI-powered language partner adapts to your skill level, helps you with
           pronunciation, and makes learning fun with cultural insights and
-          gamified challenges. Click a topic below and start speaking like a
+          gamified challenges. Get started below and start speaking like a
           native today! 🌍✨
         </p>
 

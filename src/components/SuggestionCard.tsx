@@ -1,4 +1,4 @@
-import { Brain, MicVocal } from "lucide-react";
+import { Brain } from "lucide-react";
 import React from "react";
 
 type SuggestionCardProps = {
