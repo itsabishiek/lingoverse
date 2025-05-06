@@ -38,13 +38,7 @@ export default function Home() {
       </div>
 
       <div className="flex-1 flex items-center justify-center pt-[30px] px-[15px] pb-0 sm:p-[30px]">
-        <Image
-          src="/hero.svg"
-          alt=""
-          width={0}
-          height={0}
-          className="w-full h-full"
-        />
+        <Image src="/hero.svg" alt="" width={500} height={500} />
       </div>
     </div>
   );

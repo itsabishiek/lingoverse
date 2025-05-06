@@ -3,6 +3,7 @@ import GlobalContextProvider from "@/contexts/GlobalContextProvider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import LanguageContextProvider from "@/contexts/LanguageContextProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,7 +37,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <GlobalContextProvider>{children}</GlobalContextProvider>
+          <LanguageContextProvider>
+            <GlobalContextProvider>{children}</GlobalContextProvider>
+          </LanguageContextProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -3,13 +3,27 @@
 import SuggestionCard from "@/components/SuggestionCard";
 import TalkComponent from "@/components/TalkComponent";
 import { Button } from "@/components/ui/button";
-import { MaxSuggestions } from "@/constants";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { MaxCommands, MaxSuggestions } from "@/constants";
 import { useGlobalManager } from "@/contexts/GlobalContextProvider";
+import {
+  useLanguageManager,
+  SelectedLangType,
+} from "@/contexts/LanguageContextProvider";
 import "regenerator-runtime/runtime";
 
 type TalkToMaxProps = {};
 
 const TalkToMax: React.FC<TalkToMaxProps> = () => {
+  const { selectedLang, changeLang } = useLanguageManager();
   const {
     userCallMax,
     userStartSpeak,
@@ -25,27 +39,47 @@ const TalkToMax: React.FC<TalkToMaxProps> = () => {
   return (
     <div className="w-full h-screen">
       <div className="mx-auto w-full h-full md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem] flex flex-col justify-between px-5 py-10">
-        <div className="flex justify-between">
+        <div className="flex items-start justify-between">
           <div>
             <h1 className="font-semibold text-2xl pb-2">
               Hey, <b className="text-primary">Abishiek!</b>
             </h1>
             <p className="text-sm text-muted-foreground max-w-xl">
-              Whether you want to chat, improve pronunciation, or explore
-              cultural gems, I’m here to make learning fun and engaging.
+              {MaxCommands[selectedLang].aboutMax}
             </p>
           </div>
 
-          {isCalling && (
-            <Button variant="destructive" onClick={endCall}>
-              Hang up
-            </Button>
-          )}
+          <div className="flex items-center gap-3">
+            <Select
+              value={selectedLang}
+              onValueChange={(lang: SelectedLangType) => changeLang(lang)}
+              disabled={conversation.length > 0}
+            >
+              <SelectTrigger className="w-[120px]">
+                <SelectValue placeholder="Select language" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="en-US">English</SelectItem>
+                  <SelectItem value="ta-IN">Tamil</SelectItem>
+                  <SelectItem value="hi-IN">Hindi</SelectItem>
+                  <SelectItem value="fr-FR">Français</SelectItem>
+                  <SelectItem value="zh-CN">中文</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+
+            {isCalling && (
+              <Button variant="destructive" onClick={endCall}>
+                Hang up
+              </Button>
+            )}
+          </div>
         </div>
 
         {conversation.length === 0 && (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-            {MaxSuggestions.map((data, i) => (
+            {MaxSuggestions[selectedLang].map((data, i) => (
               <SuggestionCard key={i} data={data} handleMain={handleMain} />
             ))}
           </div>

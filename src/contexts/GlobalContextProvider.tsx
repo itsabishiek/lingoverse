@@ -6,6 +6,7 @@ import { createContext, useContext, useEffect, useRef, useState } from "react";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
+import { useLanguageManager } from "./LanguageContextProvider";
 
 interface GlobalContextType {
   userCallMax: () => void;
@@ -38,7 +39,7 @@ type GlobalContextProviderProps = {
 export const useGlobalManager = () => {
   const context = useContext(GlobalContext);
   if (context === undefined) {
-    throw new Error("useCallManager must be used within a CallManager");
+    throw new Error("useGlobalManager must be used within a GlobalManager");
   }
   return context;
 };
@@ -64,6 +65,8 @@ const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
   const [userSpeechSynthesis, setUserSpeechSynthesis] =
     useState<SpeechSynthesis>();
   const [userLocalStorage, setUserLocalStorage] = useState<Storage>();
+
+  const { selectedLang } = useLanguageManager();
   // const defaultIntroduction = MaxCommands.intro;
 
   const [conversation, setConversation] = useState<ConversationType[]>([]);
@@ -79,7 +82,7 @@ const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
     setIsBotSpeaking(false);
 
     if (isUserCalling.current) {
-      SpeechRecognition.startListening();
+      SpeechRecognition.startListening({ language: selectedLang });
     }
   };
 
@@ -89,12 +92,15 @@ const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
 
     if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
       userSpeechSynthesis.speak(
-        new SpeechSynthesisUtterance(MaxCommands.browserNotCompactible)
+        new SpeechSynthesisUtterance(
+          MaxCommands[selectedLang].browserNotCompactible
+        )
       );
       return;
     }
 
     const utterance = new SpeechSynthesisUtterance(msg);
+    utterance.lang = selectedLang;
     utterance.onstart = handleMaxSpeechStart;
     utterance.onend = handleMaxSpeechEnd;
     userSpeechSynthesis.speak(utterance);
@@ -115,7 +121,11 @@ const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
       const response = await fetch("/api/gemini/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ history: geminiFormattedMsgs, message }),
+        body: JSON.stringify({
+          history: geminiFormattedMsgs,
+          message,
+          systemInstruction: MaxCommands[selectedLang].systemInstructions,
+        }),
       });
 
       if (!response.ok) throw new Error("Gemini API request failed");
@@ -159,7 +169,7 @@ const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
   };
 
   const userStartSpeak = () => {
-    SpeechRecognition.startListening();
+    SpeechRecognition.startListening({ language: selectedLang });
 
     if (transcript !== "") {
       resetTranscript();
@@ -178,7 +188,7 @@ const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
       setConversation([
         ...conversation,
         {
-          message: MaxCommands.browserNotCompactible,
+          message: MaxCommands[selectedLang].browserNotCompactible,
           sender: "max",
         },
       ]);
@@ -187,7 +197,7 @@ const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({
       return;
     }
 
-    const defaultMessage = "Hello Max!";
+    const defaultMessage = MaxCommands[selectedLang].firstMessage;
 
     const maxReply = await getMaxReply(conversation, defaultMessage);
 
