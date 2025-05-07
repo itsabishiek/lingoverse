@@ -18,6 +18,8 @@ import {
   useLanguageManager,
   SelectedLangType,
 } from "@/contexts/LanguageContextProvider";
+import { History } from "lucide-react";
+import Link from "next/link";
 import "regenerator-runtime/runtime";
 
 type TalkToMaxProps = {};
@@ -74,6 +76,12 @@ const TalkToMax: React.FC<TalkToMaxProps> = () => {
                 Hang up
               </Button>
             )}
+
+            <Button variant="outline" title="History" asChild>
+              <Link href="/talkToMax/history">
+                <History />
+              </Link>
+            </Button>
           </div>
         </div>
 
